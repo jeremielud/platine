@@ -1,0 +1,28 @@
+/* XPM */
+static char *strip_ecran[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 6 1 ",
+"  c None",
+". c black",
+"X c #DD0000",
+"o c #AAAAAA",
+"O c #BBBBBB",
+"+ c white",
+/* pixels */
+"                ",
+" .............. ",
+".oooooooooooooo.",
+".o...........+o.",
+".o.  ++  ++  +o.",
+".o.  ++  ++  +o.",
+".o.++  ++  +++o.",
+".o.++  ++  +++o.",
+".o.  ++  ++  +o.",
+".o.  ++  ++  +o.",
+".o.++  ++  +++o.",
+".o.++  ++  +++o.",
+".+X+++++++++++o.",
+".              .",
+".OooooooooooooO.",
+" .............. "
+};

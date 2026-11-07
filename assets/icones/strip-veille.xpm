@@ -1,0 +1,33 @@
+/* XPM */
+static char *strip_veille[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 11 1 ",
+"  c None",
+". c #006633",
+"X c #FFFF33",
+"o c #330099",
+"O c #CC00CC",
+"+ c #888888",
+"@ c #AAAAAA",
+"# c #BBBBBB",
+"$ c #DDDDDD",
+"% c #EEEEEE",
+"& c white",
+/* pixels */
+"                ",
+"               $",
+" ooo.oooooooooo%",
+" ooooo+$$oooo&o%",
+" Oooo@&@ooo.ooo%",
+" ooo@&#oooooooo%",
+" o%o&$@oooooooo%",
+" ooo&$@oooo&ooo%",
+" ooo@&@oooooooo%",
+" oooo@%@ooooo&o%",
+" oXooo+$$oooooo%",
+" ooo&oooooooooo%",
+" oooooooooooOoo%",
+" oooooooooooooo%",
+"$%%%%%%%%%%%%%%%",
+"                "
+};

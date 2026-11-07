@@ -1,0 +1,18 @@
+#!/bin/sh -
+# lid_switch (Platine) : action choisie dans le tableau Économiseur d'énergie.
+# Le 701 (i915) n'a pas de variable wscons « backlight » : l'écran s'éteint par DPMS.
+. /etc/powerd/scripts/platine-commun.sh
+case "${2}" in
+pressed)
+	case $(energie couvercle ecran) in
+	ecran)	dans_x xset dpms force off ;;
+	veille)	suspendre ;;
+	esac
+	exit 0 ;;
+released)
+	dans_x xset dpms force on
+	exit 0 ;;
+*)
+	logger -p warning "${0}: unsupported event ${2} on device ${1}"
+	exit 1 ;;
+esac

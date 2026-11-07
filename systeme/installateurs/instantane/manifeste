@@ -1,0 +1,11 @@
+nom=Instantané
+version=1.0, Platine 2026
+lieu=Applications
+dossier=Instantané ƒ
+lisezmoi=Lisez-moi Instantané
+licence=Licence Instantané
+apres=System/Extensions/Instantané
+pomme=Instantané
+composant=Instantané|L'extension de capture d'écran (touches Option Majuscule 3).|1|Instantané|System/Extensions
+composant=Module Control Strip|Capture d'écran et dossier Captures depuis le Control Strip.|1|Control Strip Modules/Instantané:Control Strip Modules/Instantané.xpm|System
+composant=Documentation|Le Lisez-moi et la licence, à garder avec le programme.|1|Lisez-moi Instantané:Licence Instantané

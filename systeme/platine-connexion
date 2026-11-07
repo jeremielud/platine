@@ -1,0 +1,7 @@
+#!/bin/sh
+# platine-connexion : ouverture de session automatique de jeremie sur tty1, sans rien
+# afficher (le ~/.profile lance X) ; relancée par init à la fin de la session.
+# Comme le ferait login : la console appartient à l'utilisateur pendant sa session.
+chown jeremie:tty /dev/tty1
+chmod 620 /dev/tty1
+exec su -l jeremie

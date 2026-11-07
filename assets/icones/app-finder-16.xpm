@@ -1,0 +1,29 @@
+/* XPM */
+static char *app_finder_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 7 1 ",
+"  c None",
+". c black",
+"X c #000055",
+"o c #333366",
+"O c #6666CC",
+"+ c #9999FF",
+"@ c #CCCCFF",
+/* pixels */
+"         o      ",
+"        o.      ",
+"oooooooo.ooooooo",
+"oOOOOOO.O@@@@@@o",
+"oOOOXOO.+@@.@@@o",
+"oOOOXOo.@@@.@@@o",
+"oOOOOO.O@@@@@@@o",
+"oOOOOO.+@@@@@@@o",
+"oOOOOO....@@@@@o",
+"oOOOOOOOO.@@@@@o",
+"oOO.XOOOO.@@..@o",
+"oOOOOXXXX...+@@o",
+"oOOOOOOOO.@@@@@o",
+"ooooooooo.oooooo",
+"         o.     ",
+"          o.    "
+};

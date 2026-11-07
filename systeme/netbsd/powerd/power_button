@@ -1,0 +1,17 @@
+#!/bin/sh -
+# power_button (Platine) : action choisie dans le tableau Économiseur d'énergie.
+. /etc/powerd/scripts/platine-commun.sh
+case "${2}" in
+pressed)
+	case $(energie alimentation demander) in
+	demander)	# alerte Mac OS 9 (en arrière-plan : powerd n'attend pas la réponse) ;
+		# sans session Platine, on éteint comme NetBSD
+		( alerte_x alimentation || shutdown -p now "power button pressed" ) & ;;
+	eteindre) shutdown -p now "power button pressed" ;;
+	veille)	suspendre ;;
+	esac
+	exit 0 ;;
+*)
+	logger -p warning "${0}: unsupported event ${2} on device ${1}"
+	exit 1 ;;
+esac

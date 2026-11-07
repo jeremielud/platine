@@ -1,0 +1,25 @@
+# Produits de compilation (make)
+/build/
+*.o
+__pycache__/
+
+# Assets personnels issus de Mac OS 9 : préparés localement, jamais publiés
+# → désormais DANS le dépôt (2026-11-07) : assets/, systeme/polices/,
+# systeme/curseurs/, systeme/themes/Mac-OS-9/ sont suivis et publiés ; ils
+# restent la propriété d'Apple Inc. et strictement personnels (NOTICE.md).
+
+# Ressources de référence, ancienne version : hors dépôt (usage privé)
+/ressources/
+
+# Live CD Platine : matériel de construction (VM, extraction du CD 9.2.1,
+# programmes tiers) — usage strictement personnel, NOTICE.md
+/cd-live/
+/audit/
+/archive/
+*.whl
+/outils/publier.log
+
+# La tree du bureau et les captures Apple-dérivées restent sur mon disque.
+/docs/img/*.png
+/docs/img/*.xwd
+!/docs/img/public/

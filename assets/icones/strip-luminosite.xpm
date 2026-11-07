@@ -1,0 +1,27 @@
+/* XPM */
+static char *strip_luminosite[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1 ",
+"  c None",
+". c black",
+"X c #888888",
+"o c gray80",
+"O c white",
+/* pixels */
+"   .............",
+"  ..ooooooooooX.",
+" ..oooooooooooX.",
+"..ooooooooooooX.",
+".X..o........oX.",
+"..O.o........oX.",
+"..O.o..     .oX.",
+"..O.o..    O.oX.",
+"..O.o..     .oX.",
+"..O.o..    O.oX.",
+"..O.o.      .oX.",
+".X..o........oX.",
+"..ooooooooooooX.",
+" ..oooooooooooX.",
+"  ..XXXXXXXXXXX.",
+"   ............."
+};

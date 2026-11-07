@@ -1,0 +1,10 @@
+PLATINE-MODULE-1
+nom=Instantané
+icone=Instantané.xpm
+etat=Option Majuscule 3 pour capturer
+element=Capturer l'écran|@System/Extensions/Instantané|platine-instantane|ecran
+element=Capturer la fenêtre|@System/Extensions/Instantané|platine-instantane|fenetre
+element=Capturer la sélection|@System/Extensions/Instantané|platine-instantane|selection
+element=-
+element=Ouvrir Instantané|@System/Extensions/Instantané|platine-instantane|panneau
+element=Ouvrir le dossier Captures|ouvrir:Captures

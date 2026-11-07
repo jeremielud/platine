@@ -1,0 +1,59 @@
+#!/bin/sh
+# privilege : actions réservées à root, appelées par les tableaux de bord Platine via
+#   doas -n /usr/local/libexec/platine/privilege ACTION [ARGUMENTS]
+# Seules les actions ci-dessous existent ; chaque argument est vérifié.
+# (Le Wi-Fi se règle sans root : wpa_cli, l'utilisateur est dans le groupe wheel.)
+set -e
+action=$1; [ $# -gt 0 ] && shift
+
+nombre() { case $1 in ''|*[!0-9]*) exit 2 ;; esac; }
+retro() { for b in /sys/class/backlight/*; do [ -e "$b/brightness" ] && { echo "$b"; return; }; done; exit 3; }
+
+case $action in
+date)	# date AAAAMMJJhhmm (envoyé par le tableau Date et heure), puis RTC en UTC
+	nombre "$1"; [ ${#1} -eq 12 ] || exit 2
+	date -s "$(echo "$1" | sed 's/\(....\)\(..\)\(..\)\(..\)\(..\)/\1-\2-\3 \4:\5:00/')" >/dev/null
+	hwclock -u -w ;;
+fuseau)	# fuseau Europe/Paris
+	case $1 in ''|/*|*..*|*[!A-Za-z0-9/_+-]*) exit 2 ;; esac
+	[ -f "/usr/share/zoneinfo/$1" ] || exit 2
+	ln -sf "/usr/share/zoneinfo/$1" /etc/localtime ;;
+ntp)	# ntp on|off, ou sans argument : mise à l'heure ponctuelle
+	case $1 in
+	'') chronyd -q -t 10 'pool pool.ntp.org iburst' >/dev/null 2>&1 && hwclock -u -w ;;
+	on)  rc-update -q add chronyd default; rc-service -q chronyd start ;;
+	off) rc-service -q chronyd stop; rc-update -q del chronyd default ;;
+	*) exit 2 ;; esac ;;
+radio)	# radio on|off
+	case $1 in on) rfkill unblock wlan ;; off) rfkill block wlan ;; *) exit 2 ;; esac ;;
+luminosite)	# luminosite 0-100 (pourcentage)
+	nombre "$1"; [ "$1" -le 100 ] || exit 2
+	b=$(retro); max=$(cat $b/max_brightness)
+	v=$(( $1 * max / 100 )); [ $v -lt 1 ] && v=1
+	echo $v > $b/brightness ;;
+processeur)	# processeur auto|haute|basse
+	case $1 in auto) g=ondemand ;; haute) g=performance ;; basse) g=powersave ;; *) exit 2 ;; esac
+	for f in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
+		[ -w "$f" ] && { echo $g > "$f" 2>/dev/null || echo userspace > "$f"; }
+	done
+	echo $1 > /etc/platine-processeur ;;
+couvercle)	# couvercle 0|1  (rien, veille) — lu par /etc/acpi/platine.sh
+	case $1 in [01]) echo $1 > /etc/platine-couvercle ;; *) exit 2 ;; esac ;;
+clavier)	# clavier fr|be|ch|ca|us|gb|de|es (console ; X se règle avec setxkbmap)
+	case $1 in fr|be|ch|ca|us|gb|de|es) ;; *) exit 2 ;; esac
+	k=$1; [ $k = ch ] && k=fr-ch; [ $k = gb ] && k=uk
+	f=$(ls /usr/share/bkeymaps/*/$k.bmap.gz 2>/dev/null | head -1)
+	[ -n "$f" ] && cp "$f" /etc/keymap/clavier.bmap.gz && \
+		sed -i "s|^KEYMAP=.*|KEYMAP=/etc/keymap/clavier.bmap.gz|" /etc/conf.d/loadkmap ;;
+nom)	# nom de la machine
+	case $1 in ''|*[!a-zA-Z0-9-]*) exit 2 ;; esac
+	echo $1 > /etc/hostname; hostname $1 ;;
+ejecter)	# démonte les médias amovibles (/media, /run/media)
+	for m in $(awk '$2 ~ "^/(run/)?media/" {print $2}' /proc/mounts); do umount "$m" || true; done ;;
+maj)	# mise à jour de tous les paquets
+	apk update && apk upgrade ;;
+veille)	sync; echo mem > /sys/power/state ;;
+eteindre)	poweroff ;;
+redemarrer)	reboot ;;
+*)	echo "action inconnue : $action" >&2; exit 1 ;;
+esac

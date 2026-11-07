@@ -1,0 +1,26 @@
+/* XPM */
+static char *document_texte_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1 ",
+"  c None",
+". c black",
+"X c gray80",
+"o c #EEEEEE",
+/* pixels */
+" ..........     ",
+" .oooooooo..    ",
+" .oooooooo.X.   ",
+" .oooooooo....  ",
+" .ooooooooooo.  ",
+" .ooooooooooo.  ",
+" .oo.o..o..oo.  ",
+" .ooooooooooo.  ",
+" .oo....o..oo.  ",
+" .ooooooooooo.  ",
+" .oo..o..o.oo.  ",
+" .ooooooooooo.  ",
+" .ooooooooooo.  ",
+" .ooooooooooo.  ",
+" .ooooooooooo.  ",
+" .............  "
+};

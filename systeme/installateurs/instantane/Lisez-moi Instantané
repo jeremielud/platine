@@ -1,0 +1,23 @@
+Instantané 1.0 — Lisez-moi
+
+Instantané est l'outil de capture d'écran de Platine, dans l'esprit de
+Snapz Pro 2 sous Mac OS 9.
+
+Utilisation
+  • Appuyez sur ⌘⇧3 (Option Majuscule 3) n'importe quand : l'écran est figé
+    tel qu'il est, puis le panneau d'Instantané s'ouvre.
+  • Écran : tout l'écran. Fenêtre : désignez une fenêtre, elle s'entoure ;
+    cliquez. Sélection : tracez un rectangle à la souris.
+  • Raccourcis du panneau : E (Écran), F (Fenêtre), S (Sélection), Échap.
+  • Envoyer vers : le dossier « Captures » du disque « Eee PC 701 »
+    (Capture 1.png, Capture 2.png…) ou le presse-papiers.
+  • Couleurs, Échelle et Format (PNG ou PPM) s'appliquent à chaque capture ;
+    « Curseur visible » garde la flèche dans l'image.
+  • « Choisir le nom du fichier » ouvre la zone de dialogue d'enregistrement.
+
+Installation
+  L'extension Instantané va dans le dossier Extensions du dossier Système ;
+  elle démarre dès la fin de l'installation et à chaque ouverture de session.
+  Ce Lisez-moi et la licence vont dans le dossier « Instantané ƒ »
+  d'Applications. Pour retirer Instantané, relancez l'Installateur et
+  choisissez « Désinstallation ».

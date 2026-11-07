@@ -1,0 +1,30 @@
+/* XPM */
+static char *strip_diction[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 8 1 ",
+"  c None",
+". c black",
+"X c #888888",
+"o c #AAAAAA",
+"O c #BBBBBB",
+"+ c gray80",
+"@ c #DDDDDD",
+"# c #EEEEEE",
+/* pixels */
+"   .............",
+"  ..@OooXXXXooo.",
+" ..@OoXX    XXo.",
+"..@OOX  @@@   X.",
+".@O.o  @  X@   .",
+".@..o  @ @@O   .",
+".@..OX X  oO   .",
+".@..OXo.. @O   .",
+".@..OoX.. o    .",
+".@..OoX o@o    .",
+".@..OoX@@o     .",
+".OO.oX o#     X.",
+"..O+oX        X.",
+" ..OoX       XX.",
+"  ..XXX    XXXX.",
+"   ............."
+};

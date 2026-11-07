@@ -1,0 +1,34 @@
+#!/bin/sh
+# privilege : actions réservées à root, appelées par Platine via platine-privilege.
+# Seules les actions ci-dessous existent ; chaque argument est vérifié.
+set -e
+action=$1; [ $# -gt 0 ] && shift
+nombre() { case $1 in ''|*[!0-9]*) exit 2 ;; esac; }
+case $action in
+veille)	sysctl -w hw.acpi.sleep.state=3 >/dev/null ;;
+date)	# date AAAAMMJJhhmm, heure locale (TZ transmis) ; le noyau réécrit l'horloge
+	# matérielle (resettodr, RTC en UTC car kern.rtc_offset=0) à chaque réglage
+	nombre "$1"; [ ${#1} -eq 12 ] || exit 2; /bin/date "$1" >/dev/null ;;
+ntp)	# mise à l'heure ponctuelle par le réseau (pas de ntpd permanent : démarrage minimal)
+	# un seul échantillon par serveur : un serveur muet du pool coûtait jusqu'à 15 s
+	/usr/bin/timeout 8 /usr/sbin/ntpdate -b -u -p 1 -t 2 pool.ntp.org >/dev/null 2>&1 ;;
+fuseau)	# fuseau Europe/Paris : /etc/localtime pour la console, syslog et les services
+	case $1 in ''|/*|*..*|*[!A-Za-z0-9/_+-]*) exit 2 ;; esac
+	[ -f "/usr/share/zoneinfo/$1" ] || exit 2
+	ln -sf "/usr/share/zoneinfo/$1" /etc/localtime ;;
+arret)	shutdown -p now ;;
+redemarrer) shutdown -r now ;;
+energie)	# energie couvercle ecran|veille|rien ; energie alimentation demander|eteindre|veille|rien
+	case "$1 $2" in
+	"couvercle ecran"|"couvercle veille"|"couvercle rien") ;;
+	"alimentation demander"|"alimentation eteindre"|"alimentation veille"|"alimentation rien") ;;
+	*) exit 2 ;; esac
+	f=/etc/platine-energie; touch $f
+	{ grep -v "^$1 " $f || true; echo "$1 $2"; } > $f.neuf
+	chmod 644 $f.neuf; mv -f $f.neuf $f ;;
+luminosite)	# luminosite 0-100 (pourcentage, comme l'envoie le Control Strip)
+	nombre "$1"; [ "$1" -le 100 ] || exit 2
+	wsconsctl -d -w brightness=$1 >/dev/null ;;
+radio)	case $1 in on) ifconfig ath0 up ;; off) ifconfig ath0 down ;; *) exit 2 ;; esac ;;
+*)	exit 2 ;;
+esac

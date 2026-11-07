@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# PROVIDE: platine_ecran
+# REQUIRE: root
+#
+# Platine : écran de démarrage façon Mac OS 9 pendant les scripts rc (platine-ecran-netbsd).
+# L'écran lit la progression dans /var/run/rc.log ; il reçoit le total et les scripts déjà passés.
+
+$_rc_subr_loaded . /etc/rc.subr
+
+name=platine_ecran
+start_cmd=platine_ecran_start
+stop_cmd=:
+
+platine_ecran_start()
+{
+	# total des scripts et ceux déjà passés, en arguments : /var n'est pas encore monté
+	local avant= s
+	set -- $RC_FILES_OVERRIDE
+	# + 12 étapes de platine-session (« etape total 12 ») : la barre ne recule pas sous X
+	local total=$(($# - 1 + 12))
+	for s; do
+		case $s in */platine_ecran) break ;; esac
+		avant="$avant ${s##*/}"
+	done
+	rm -f /var/run/platine-demarrage.etat
+	[ -x /opt/platine/bin/platine-ecran-netbsd ] &&
+		/opt/platine/bin/platine-ecran-netbsd $total $avant </dev/null >/dev/null 2>&1 9>&- &
+}
+
+load_rc_config $name
+run_rc_command "$1"

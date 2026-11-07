@@ -1,0 +1,30 @@
+/* XPM */
+static char *dossier_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 8 1 ",
+"  c None",
+". c #000066",
+"X c #333399",
+"o c #6666CC",
+"O c #9999FF",
+"+ c #CCCCFF",
+"@ c #EEEEEE",
+"# c white",
+/* pixels */
+"  XXX           ",
+"XXOOXXX XXX     ",
+".+oXOOXX@+XXX   ",
+".+#OoXOOOO@O.   ",
+".+++#OoXOOOo.   ",
+".+++++#OoXOo.   ",
+".++++++++OXo.   ",
+".++++++++OXo.   ",
+".++++++++OXo.   ",
+".++++++++OXo.   ",
+".oO++++++OXo.   ",
+"..XoO++++OXo.   ",
+"  ..XoO++OXo.   ",
+"    ..XoOOXo.   ",
+"      ..XoXo.   ",
+"        ....    "
+};

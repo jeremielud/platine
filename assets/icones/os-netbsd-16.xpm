@@ -1,0 +1,33 @@
+/* XPM */
+static char *os_netbsd_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 11 1 ",
+"  c None",
+". c #F26A15",
+"X c #F2772B",
+"o c #F5823B",
+"O c #BF9073",
+"+ c #DE8045",
+"@ c #F68D4C",
+"# c #CC9878",
+"$ c #F8AC7D",
+"% c #948F8C",
+"& c #A9998F",
+/* pixels */
+"                ",
+"                ",
+"                ",
+"                ",
+"         XXXX@$ ",
+"#XX  XX..Xo@o   ",
+"&X........Xo    ",
+" O......X       ",
+" %+...X         ",
+"  %             ",
+"  %             ",
+"                ",
+"                ",
+"                ",
+"                ",
+"                "
+};

@@ -1,0 +1,29 @@
+/* XPM */
+static char *strip_son[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 7 1 ",
+"  c None",
+". c black",
+"X c #6666CC",
+"o c #BBBBBB",
+"O c #9999FF",
+"+ c #CCCCFF",
+"@ c white",
+/* pixels */
+"         .      ",
+"        ..      ",
+"       .X.   .  ",
+"      .XO.    . ",
+"     .XO+.  . . ",
+".....XO+@.  .  .",
+".OOOOo@@+.   . .",
+".@@@@@@++.   . .",
+".OOOOXOOO.   . .",
+".XXXXXOOO.   . .",
+".....XXOO.  .  .",
+"     .XXO.  . . ",
+"      .XX.    . ",
+"       .X.   .  ",
+"        ..      ",
+"         .      "
+};

@@ -1,0 +1,27 @@
+/* XPM */
+static char *corbeille_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1 ",
+"  c None",
+". c black",
+"X c #888888",
+"o c gray80",
+"O c white",
+/* pixels */
+"   ...          ",
+" ...oX...       ",
+"..o.. ..X.      ",
+".oOOo . X .     ",
+".ooOOooXX .     ",
+". XoooXX ..     ",
+".o     ..X.     ",
+".XooooXXX .     ",
+".XoXoo X  .     ",
+".XoXoo X  .     ",
+".XoXoo X  .     ",
+".XoXoo X  .     ",
+".XoXoo X  .     ",
+".ooXoo X  .     ",
+" .ooooXX..      ",
+"    .....       "
+};

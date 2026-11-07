@@ -1,0 +1,19 @@
+Théière 1.0 — Lisez-moi
+
+Théière dessine la théière de l'Utah en OpenGL, avec le modèle même de
+glut_teapot.c (Mark J. Kilgard, Silicon Graphics ; données de Martin Newell,
+domaine public).
+
+Utilisation
+  • La théière tourne seule ; faites-la glisser à la souris pour l'orienter.
+  • Le titre de la fenêtre indique le moteur de rendu et les images par
+    seconde.
+  • Fermer (⌘W), Quitter (⌘Q) ou Échap pour terminer.
+
+Configuration requise
+  • Platine sur l'Eee PC 701 (Intel 915GM) ou toute machine OpenGL 1.4.
+
+Installation
+  L'Installateur place le dossier « Théière ƒ » dans le dossier
+  Applications du disque « Eee PC 701 ». Pour retirer Théière, relancez
+  l'Installateur et choisissez « Désinstallation ».

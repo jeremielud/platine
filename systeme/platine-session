@@ -1,0 +1,130 @@
+#!/bin/sh
+# platine-session demarrer : session du bureau Platine (platine-wm, Finder, Control Strip).
+# Reprend la séquence de démarrage façon Mac OS 9 : chaque étape réelle fait apparaître
+# une icône d'extension. Code de sortie 1 si le WM meurt tout de suite : ~/.xinitrc
+# ouvre alors un terminal de secours. Les extensions de l'ancien bureau (archive mlvwm
+# + Tk) sont facultatives : tout ce qui suit fonctionne sans elles.
+P=/opt/platine
+export PATH=$P/bin:$PATH:/sbin:/usr/sbin PLATINE_ASSETS=$P/assets PLATINE_SONS=1
+export XCURSOR_PATH=$HOME/.icons:/usr/share/icons:/usr/X11R7/share/icons
+export LANG=fr_FR.UTF-8 LC_ALL=fr_FR.UTF-8
+R=$HOME/.config/platine/reglages
+# Arborescence du disque, comme Mac OS X (décision D11) : les composants de Platine
+# vivent dans /System (Système = le WM, Finder, Extensions) ; prog les y prend,
+# sinon dans le PATH (développement). PLATINE_VOLUME remplace la racine.
+S="${PLATINE_VOLUME:-}/System"
+[ -e "$S/Finder" ] || S="$HOME/System"
+prog() { # prog "chemin dans System" nom-unix
+	if [ -x "$S/$1" ]; then printf '%s\n' "$S/$1"; else command -v "$2"; fi
+}
+
+val() { # val CLÉ DÉFAUT
+	v=$(awk -v k="$1" '$1==k { $1=""; sub(/^ /,""); gsub(/^\{|\}$/,""); print; exit }' "$R" 2>/dev/null)
+	printf '%s\n' "${v:-$2}"
+}
+# l'écran de démarrage d'abord : il reprend l'image de l'écran rc (pas de noir après X)
+F=${XDG_RUNTIME_DIR:-/tmp}/platine-demarrage
+DEM=$(prog "Extensions/Écran de démarrage" platine-demarrage)
+if [ "$(val demarrage_anime 1)" = 1 ] && [ -n "$DEM" ]; then
+	rm -f "$F"; mkfifo "$F"
+	"$DEM" "$F" &
+	ecran_demarrage=$!
+	exec 3<>"$F"	# lecture-écriture : n'attend jamais le lecteur
+else
+	exec 3>/dev/null
+fi
+export TZ=$(val fuseau Europe/Paris)
+
+energie() {
+	e=$(val ecran_minutes 5)
+	# l'économiseur d'écran est After Dark (platine-afterdark --veille) : X ne fait que la veille DPMS
+	if [ "$e" -le 0 ] || [ "$e" -ge 60 ]; then xset s off -dpms; else xset s off dpms $((e*60)) $((e*60)) $((e*60)); fi
+	command -v xautolock >/dev/null && command -v platine-veille >/dev/null || return 0
+	pkill -u "$(id -u)" -x xautolock 2>/dev/null
+	v=$(val veille_minutes 10)
+	[ "$v" -gt 0 ] && [ "$v" -lt 61 ] && xautolock -time "$v" -locker platine-veille -detectsleep &
+}
+
+souris() {
+	# vitesse 1 (très lent) à 6 (rapide) → « libinput Accel Speed » de -0,8 à 0,8
+	v=$(val vitesse_souris 3)
+	a=$(awk -v v="$v" 'BEGIN { printf "%.2f", (v - 3.5) * 0.32 }')
+	for id in $(xinput list --id-only 2>/dev/null); do
+		xinput list-props "$id" 2>/dev/null | grep -q 'libinput Accel Speed (' && \
+			xinput set-prop "$id" 'libinput Accel Speed' "$a" 2>/dev/null
+	done
+	# NetBSD (pilote ws) : pas d'accélération de X par-dessus celle du pavé tactile (vitesse 3 = 1:1)
+	if [ "$(uname)" = NetBSD ]; then
+		xset m 1/1 0
+		xinput set-prop /dev/wsmouse "Device Accel Profile" -1 2>/dev/null
+		# vitesse 1 à 6 : décélération constante (3 = 1:1 avec le pavé)
+		xinput set-prop /dev/wsmouse "Device Accel Constant Deceleration" "$(awk -v v="$v" 'BEGIN { printf "%.2f", 3 / v }')" 2>/dev/null
+	fi
+	if [ "$(val repetition_delai 400)" = 0 ]; then xset r off; else xset r rate "$(val repetition_delai 400)" "$(val repetition_vitesse 30)"; fi
+	command -v xprop >/dev/null && xprop -root -f _PLATINE_DOUBLE_CLIC 32c -set _PLATINE_DOUBLE_CLIC "$(val double_clic 533)"
+}
+
+etape() { echo "$*" >&3; }
+etape total 12
+etape general-controls Préférences
+etape fontsync-extension Polices
+fc-cache >/dev/null 2>&1
+etape text-encoding-converter Clavier
+setxkbmap $(val clavier fr)
+etape appearance Apparence
+xrdb -merge $HOME/.Xresources 2>/dev/null
+export GTK_THEME=Mac-OS-9
+etape colorsync Couleurs
+export XCURSOR_THEME=Platine9 XCURSOR_SIZE=16
+# OpenGL (docs/11-graphisme-gl.md) : synchro verticale par défaut pour tous les
+# programmes, jeux compris — sans elle glxgears tourne à 234 i/s pour 63 % du
+# processeur du 701, avec elle à 60 i/s pour 16 %. Un programme peut la lever
+# (intervalle 0) ; une valeur posée avant la session est respectée.
+export vblank_mode=${vblank_mode:-2}
+xsetroot -cursor_name left_ptr
+etape mouse Souris
+souris
+etape sound-manager Son
+if command -v amixer >/dev/null; then
+	amixer -q set Master "$(val volume 60)%" unmute 2>/dev/null
+elif command -v mixerctl >/dev/null; then
+	mixerctl -w outputs.master=$(( $(val volume 60) * 255 / 100 )) >/dev/null 2>&1
+fi
+etape contextual-menu-extension Alerte
+command -v platine-cloche >/dev/null && platine-cloche &
+OSD=$(prog "Extensions/Affichage à l'écran" platine-osd)
+[ -n "$OSD" ] && "$OSD" "${XDG_RUNTIME_DIR:-/tmp}/platine-osd" &
+[ "$(val diction 0)" = 1 ] && command -v platine-diction >/dev/null && platine-diction marche
+etape energy-saver Économiseur
+energie
+etape after-dark "After Dark"
+command -v platine-afterdark >/dev/null && platine-afterdark --veille &
+etape open-transport Réseau
+etape internet AirPort
+etape file-sharing-extension Corbeille
+mkdir -p "$HOME/Documents" "$HOME/Images" "$HOME/.local/share/Trash/files"
+etape control-strip "Control Strip"
+etape fin
+exec 3>&-
+if [ -n "$ecran_demarrage" ]; then
+	n=0; while kill -0 $ecran_demarrage 2>/dev/null && [ $n -lt 150 ]; do sleep 0.1; n=$((n+1)); done
+fi
+rm -f "$F"
+
+FINDER=$(prog Finder platine-finder)
+STRIP=$(prog "Extensions/Control Strip" platine-strip)
+# Instantané : l'outil de capture d'écran, à l'affût de ⌘⇧3 (comme Snapz Pro)
+INST=$(prog "Extensions/Instantané" platine-instantane)
+WM=$(prog Système platine-wm)
+# Éléments de démarrage : comme Mac OS 9, ce qu'on y pose s'ouvre après le Finder
+( sleep 0.6; "$FINDER" & "$STRIP" & [ -n "$INST" ] && "$INST" &
+  sleep 1.5
+  for e in "$S/Éléments de démarrage"/*; do [ -x "$e" ] && [ ! -d "$e" ] && "$e" & done ) &
+debut=$(date +%s)
+if command -v dbus-launch >/dev/null; then
+	dbus-launch --exit-with-session "$WM" >"$HOME/.cache/platine-wm.log" 2>&1
+else
+	"$WM" >"$HOME/.cache/platine-wm.log" 2>&1
+fi
+[ $(( $(date +%s) - debut )) -ge 15 ] && exit 0
+exit 1

@@ -1,0 +1,32 @@
+/* XPM */
+static char *disque_16[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 10 1 ",
+"  c None",
+". c black",
+"X c #DD0000",
+"o c #888888",
+"O c #AAAAAA",
+"+ c #BBBBBB",
+"@ c gray80",
+"# c #DDDDDD",
+"$ c #EEEEEE",
+"% c white",
+/* pixels */
+"                ",
+"                ",
+"   ..........   ",
+"  .%########+.  ",
+" .%##########+. ",
+".%%%%%%%%%%%%+o.",
+".$OoOoOooooooo .",
+".$X##@@@++++++ .",
+".$##@#@@++++++ .",
+".OOooooo       .",
+" .............. ",
+"      ...       ",
+"      .@.       ",
+"      ...       ",
+"     .. ...     ",
+"  ....   .....  "
+};

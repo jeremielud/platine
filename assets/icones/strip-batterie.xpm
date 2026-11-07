@@ -1,0 +1,29 @@
+/* XPM */
+static char *strip_batterie[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 7 1 ",
+"  c None",
+". c black",
+"X c #6666CC",
+"o c #AAAAAA",
+"O c #9999FF",
+"+ c #DDDDDD",
+"@ c white",
+/* pixels */
+"                ",
+"     .....      ",
+"    .o@+o .     ",
+"    .o@.o .     ",
+"    .o... .     ",
+"    .o@.o .     ",
+"    .o@+o .     ",
+"    .......     ",
+"    .O@+OX.     ",
+"    .O@+OX.     ",
+"    .O@+OX.     ",
+"    .O@+OX.     ",
+"    .O...X.     ",
+"    .O@+OX.     ",
+"    .O@+OX.     ",
+"     .....      "
+};
